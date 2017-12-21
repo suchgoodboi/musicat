@@ -1,0 +1,43 @@
+from django import forms
+from django.utils.translation import ugettext as _
+
+from songs import models
+
+class SongForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        initial = kwargs.pop('initial', {})
+        kwargs['initial'] = initial
+        super(SongForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = models.Song
+        fields = ('name', 'group', 'description',
+                  'owner',)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Выхода нет')}),
+            'group': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Сплин')}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                 'placeholder': _(
+                                                     "Скоро рассвет,\n "
+                                                     "Выхода нет. \n"
+                                                     "Ключ поверни...")}),
+        }
+
+
+    def clean_name(self):
+        return self.cleaned_data['name'].title()
+
+
+class SearchForm(forms.Form):
+    
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+
+        cleaned_data = super(SearchForm, self).clean()
+
+        if not any([cleaned_data['name'],\
+        	        cleaned_data['group'],\
+                    cleaned_data['description']]):
+            raise forms.ValidationError(_('You must select at least one filter'))

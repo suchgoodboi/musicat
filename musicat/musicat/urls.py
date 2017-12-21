@@ -1,0 +1,17 @@
+from django.conf import settings
+from django.conf.urls import include, url, static
+from django.contrib import admin
+
+
+urlpatterns = [
+    url(r'^songs/', include('songs.urls', namespace='songs')),
+    url(r'^user/', include('users.urls', namespace='users')),
+    url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('common.urls', namespace='common')),
+]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [url(r'^__debug__/', include(debug_toolbar.urls))]
+    urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
