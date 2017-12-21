@@ -19,36 +19,36 @@
           </div>
 
           <h1 class="text-center text-uppercase poster-headline">
-            {{ pet.get_status_display }}
+            {{ song.get_status_display }}
           </h1>
 
           <div class="text-center">
             <img class="img-responsive img-rounded img-thumbnail"
-                 src="{{ pet.profile_picture|thumbnail_url:'pet_poster' }}"
-                 alt="{{ pet.name }}">
+                 src="{{ song.profile_picture|thumbnail_url:'song_poster' }}"
+                 alt="{{ song.name }}">
           </div>
 
           <h2 class="text-center poster-headline">
-            {{ pet.name }}
+            {{ song.name }}
           </h2>
 
-          {% if pet.size and pet.sex %}
+          {% if song.size and song.sex %}
             <h2 class="text-center poster-subheadline">
-              {% trans 'Size' %} {{ pet.get_size_display|lower }}, {{ pet.get_sex_display|lower }}
+              {% trans 'Size' %} {{ song.get_size_display|lower }}, {{ song.get_sex_display|lower }}
             </h2>
           {% endif %}
 
-          <p class="font-1_8rem">{{ pet.description }}</p>
+          <p class="font-1_8rem">{{ song.description }}</p>
 
           <h3>{% trans 'Contact' %}</h3>
 
           <ul class="list-unstyled font-1_8rem">
             <li>
-              {% trans 'Email' %} <i class="fa fa-envelope"></i>: {{ pet.owner.email }}
+              {% trans 'Email' %} <i class="fa fa-envelope"></i>: {{ song.owner.email }}
             </li>
-            {% if pet.owner.phone %}
+            {% if song.owner.phone %}
               <li>
-                {% trans 'Phone' %} <i class="fa fa-phone"></i>: {{ pet.owner.phone }}
+                {% trans 'Phone' %} <i class="fa fa-phone"></i>: {{ song.owner.phone }}
               </li>
             {% endif %}
           </ul>

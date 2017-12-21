@@ -87,7 +87,7 @@
 
   <div class="form-group">
     <input type="submit" name="submit" class="btn btn-primary pull-right" value="
-    {% if pet %}
+    {% if song %}
       {% trans 'Save Changes' %}
     {% else %}
       {% trans 'Register Pet' %}
@@ -97,7 +97,7 @@
 </form>
 
 <div class="col-md-6">
-  <img src="{{ form.instance.profile_picture|thumbnail_url:'pet_thumb' }}"
+  <img src="{{ form.instance.profile_picture|thumbnail_url:'song_thumb' }}"
        class="img-thumbnail" alt="{% trans 'Pet Image' %}"
        id="picture" name="imagem"/>
 </div>

@@ -3,24 +3,24 @@
 
 {% block metatags %}
   <meta property="og:title" content="{{ song.name }}">
-  <meta property="og:description" content="{{ pet.description }}">
+  <meta property="og:description" content="{{ song.description }}">
   <meta property="og:url" content="{{ current_url }}">
   <meta property="og:image"
-        content="http://www.cademeubicho.com{{ pet.profile_picture|thumbnail_url:'pet_thumb' }}">
+        content="http://www.cademeubicho.com{{ song.profile_picture|thumbnail_url:'song_thumb' }}">
   <meta property="og:site_name" content="Cadê meu Bicho?">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ pet.name }} | Cadê meu Bicho?">
-  <meta name="twitter:description" content="{{ pet.description }}">
+  <meta name="twitter:title" content="{{ song.name }} | Cadê meu Bicho?">
+  <meta name="twitter:description" content="{{ song.description }}">
   <meta name="twitter:image:src"
-        content="http://www.cademeubicho.com{{ pet.profile_picture|thumbnail_url:'pet_thumb' }}">
+        content="http://www.cademeubicho.com{{ song.profile_picture|thumbnail_url:'song_thumb' }}">
 {% endblock %}
 
-{% block title %}{{ pet.name }} - {{ pet.get_status_display }}{% endblock %}
-{% block page_title %}{{ pet.get_status_display }}: {{ pet.name|title }}, {{ pet.city|title }}{% endblock %}
+{% block title %}{{ song.name }} - {{ song.get_status_display }}{% endblock %}
+{% block page_title %}{{ song.get_status_display }}: {{ song.name|title }}, {{ song.city|title }}{% endblock %}
 
 {% block content %}
-  <div class="modal fade" id="delete_pet" tabindex="-1">
+  <div class="modal fade" id="delete_song" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
 
@@ -38,7 +38,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-          <form action="{% url 'meupet:delete_pet' pet.slug %}" method="post" class="form-inline">
+          <form action="{% url 'songs:delete_song' song.slug %}" method="post" class="form-inline">
             {% csrf_token %}
             <input type="submit" class="btn btn-danger" value="Delete"/>
           </form>
@@ -50,15 +50,15 @@
 
   <div class="row">
     <div class="col-md-5">
-      <a href="{{ pet.profile_picture.url }}" data-lightbox="{{ pet.slug }}" data-title="{{ pet }}">
-        <img class="img-thumbnail" src="{{ pet.profile_picture|thumbnail_url:'pet_thumb' }}"
-             alt="{{ pet }}"/>
+      <a href="{{ song.profile_picture.url }}" data-lightbox="{{ song.slug }}" data-title="{{ song }}">
+        <img class="img-thumbnail" src="{{ song.profile_picture|thumbnail_url:'song_thumb' }}"
+             alt="{{ song }}"/>
       </a>
-      {% if user == pet.owner %}
+      {% if user == song.owner %}
         <form class="form-horizontal" method="POST" enctype="multipart/form-data"
-              action="{% url 'meupet:upload_image' pet.slug %}">
+              action="{% url 'songs:upload_image' song.slug %}">
           {% csrf_token %}
-          <input name="pet_id" value="{{ pet.id }}" type="hidden">
+          <input name="song_id" value="{{ song.id }}" type="hidden">
 
           <div class="form-group">
             <label for="another_picture" class="control-label">Add Photo</label>
@@ -77,35 +77,35 @@
         <div class="panel-body">
           <p>
             <strong>Description:</strong><br/>
-            {{ pet.description }}
+            {{ song.description }}
           </p>
 
           <p>
             <strong>City:</strong><br/>
-            {{ pet.city|title }}
+            {{ song.city|title }}
           </p>
 
-          {% if pet.size %}
+          {% if song.size %}
             <p>
               <strong>Size:</strong><br/>
-              {{ pet.get_size_display }}
+              {{ song.get_size_display }}
             </p>
           {% endif %}
 
-          {% if pet.sex %}
+          {% if song.sex %}
             <p>
               <strong>Sex:</strong><br/>
-              {{ pet.get_sex_display }}
+              {{ song.get_sex_display }}
             </p>
           {% endif %}
 
-          {% if user == pet.owner %}
+          {% if user == song.owner %}
             <div class="pull-right">
-              {% if not pet.found_or_adopted %}
-                <form action="{% url 'meupet:change_status' pet.slug %}" method="post" class="form-inline">
+              {% if not song.found_or_adopted %}
+                <form action="{% url 'songs:change_status' song.slug %}" method="post" class="form-inline">
                   {% csrf_token %}
                   <input type="submit" class="btn btn-success" value="
-                    {% if pet.status == pet.MISSING %}
+                    {% if song.status == song.MISSING %}
                       {% trans 'Mark as found!' %}
                     {% else %}
                       {% trans 'Mark as adopted!' %}
@@ -114,11 +114,11 @@
                 </form>
               {% endif %}
 
-              <a href="{% url 'meupet:edit' pet.slug %}" class="btn btn-primary">{% trans 'Edit' %}</a>
+              <a href="{% url 'songs:edit' song.slug %}" class="btn btn-primary">{% trans 'Edit' %}</a>
 
-              <a href="{% url 'meupet:poster' pet.slug %}" class="btn btn-primary">{% trans 'Generate Poster' %}</a>
+              <a href="{% url 'songs:poster' song.slug %}" class="btn btn-primary">{% trans 'Generate Poster' %}</a>
 
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_pet">
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_song">
                 {% trans 'Delete Pet' %}
               </button>
             </div>
@@ -126,16 +126,16 @@
         </div>
       </div>
     </div>
-    {% if pet.photo_set.all %}
+    {% if song.photo_set.all %}
       <div class="col-md-12">
         <h3>{% trans 'More photos' %}</h3>
 
         <div class="row">
-          {% for photo in pet.photo_set.all %}
+          {% for photo in song.photo_set.all %}
             <div class="col-md-3">
-              <a href="{{ photo.image.url }}" data-lightbox="{{ pet.slug }}" data-title="{{ pet }}">
-                <img class="img-thumbnail" src="{{ photo.image|thumbnail_url:'pet_thumb' }}"
-                     alt="{{ pet }}"/>
+              <a href="{{ photo.image.url }}" data-lightbox="{{ song.slug }}" data-title="{{ song }}">
+                <img class="img-thumbnail" src="{{ photo.image|thumbnail_url:'song_thumb' }}"
+                     alt="{{ song }}"/>
               </a>
             </div>
             {% if forloop.counter|divisibleby:4 %}

@@ -1,10 +1,6 @@
 {% load i18n thumbnail %}
-<div class="thumbnail{% if show_badge and pet.is_found_or_adopted %} found-or-adopted{% endif %}">
   <img class="img-rounded" src="{{ pet.profile_picture|thumbnail_url:'pet_thumb' }}" alt="{{ pet }}">
 
-  {% if show_badge and pet.is_found_or_adopted %}
-    <h2 class="text-center"><span>{{ pet.get_status_display }}! :)</span></h2>
-  {% endif %}
 
   <div class="caption">
     <h4 class="title-text">{{ pet }}</h4>
@@ -12,10 +8,9 @@
       <span class="fa fa-search" aria-hidden="true"></span> {{ pet.get_status_display|title }}
     </p>
     <p>
-      <span class="fa fa-home" aria-hidden="true"></span> {{ pet.city|title }}
+      <span class="fa fa-home" aria-hidden="true"></span> {{ song.group|title }}
     </p>
-    <a href="{% url 'meupet:detail' pet.slug %}" class="btn btn-info btn-block" role="button">
+    <a href="{% url 'songs:detail' song.slug %}" class="btn btn-info btn-block" role="button">
       {% trans 'Details' %}
     </a>
   </div>
-</div>

@@ -54,9 +54,9 @@
       <div class="col-md-12">
         <h3>{% trans 'Result' %}</h3>
       </div>
-      {% for pet in pets %}
-        <div class="col-xs-12 col-sm-6 col-md-3 card-pet">
-          {% include '_partials/pet_card.html' with pet=pet only %}
+      {% for song in songs %}
+        <div class="col-xs-12 col-sm-6 col-md-3 card-song">
+          {% include '_partials/song_card.html' with song=song only %}
         </div>
       {% empty %}
         <div class="col-md-12">
