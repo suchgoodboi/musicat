@@ -5,8 +5,6 @@
   <meta property="og:title" content="{{ song.name }} | Cadê meu Bicho?">
   <meta property="og:description" content="{{ song.description }}">
   <meta property="og:url" content="{{ current_url }}">
-  <meta property="og:image"
-        content="http://www.cademeubicho.com{{ song.profile_picture|thumbnail_url:'song_thumb' }}">
   <meta property="og:site_name" content="Cadê meu Bicho?">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -17,7 +15,7 @@
 {% endblock %}
 
 {% block title %}{{ song.name }} - {{ song.get_status_display }}{% endblock %}
-{% block page_title %}{{ song.get_status_display }}: {{ song.name|title }}, {{ song.city|title }}{% endblock %}
+{% block page_title %}{{ song.get_status_display }}: {{ song.name|title }}, {{ song.group|title }}{% endblock %}
 
 {% block content %}
   <div class="modal fade" id="delete_song" tabindex="-1">

@@ -113,7 +113,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
         context['object'] = self.request.user
-        context['song'] = self.request.user.song_set.all()
+        #context['song'] = self.request.user.song_set.all()
         return context
 
 

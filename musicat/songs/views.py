@@ -70,36 +70,19 @@ class RegisterSongView(LoginRequiredMixin, CreateView):
     form_class = forms.SongForm
 
     def get_success_url(self):
-        return reverse('songs:registered', args=[self.object.slug])
+        return reverse('songs:registered', args=[self.object.id])
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_information_confirmed:
             messages.warning(request, _('Please confirm your informations before registering a new song.'))
             return HttpResponseRedirect(reverse('users:edit'))
         else:
+            print('здеся')
             return super(RegisterSongView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        #form.instance.owner = self.request.user
         return super(RegisterSongView, self).form_valid(form)
-
-
-class EditSongView(UpdateView):
-    template_name = 'songs/edit.html'
-    form_class = forms.SongForm
-    model = models.Song
-
-    def get(self, request, *args, **kwargs):
-        current_song = self.get_object()
-        if request.user == current_song.owner:
-            return super(EditSongView, self).get(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect(
-                reverse('songs:detail', kwargs={'pk_or_slug': current_song.slug})
-            )
-
-    def form_valid(self, form):
-        return super(EditSongView, self).form_valid(form)
 
 
 @require_POST
@@ -113,28 +96,8 @@ def delete_song(request, slug):
     return HttpResponseRedirect(song.get_absolute_url())
 
 
-@require_POST
-def change_status(request, slug):
-    song = get_object_or_404(models.Song, slug=slug)
-
-    if request.user != song.owner:
-        return HttpResponseRedirect(song.get_absolute_url())
-
-    song.change_status()
-    return HttpResponseRedirect(reverse('songs:detail', kwargs={'pk_or_slug': song.slug}))
-
-
-def upload_image(request, slug):
-    song = get_object_or_404(models.Song, slug=slug)
-    picture = request.FILES.get('another_picture', False)
-
-    if request.user == song.owner and request.method == 'POST' and picture:
-        models.Photo.objects.create(song_id=song.id, image=picture)
-
-    return HttpResponseRedirect(reverse('songs:detail', kwargs={'pk_or_slug': song.slug}))
-
-
 class SearchView(View):
+
     def get(self, request):
         return render(request, 'songs/search.html', {'form': SearchForm()})
 

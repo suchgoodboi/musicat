@@ -34,7 +34,7 @@ class RegisterForm(UserForm):
         self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
 
-        self.fields['profile_picture'].widget.attrs.update({'class': 'form-control'})
+        #self.fields['profile_picture'].widget.attrs.update({'class': 'form-control'})
 
         self.fields['email'].widget.attrs.update({'class': 'form-control'})
         self.fields['username'].widget.attrs.update({'class': 'form-control'})
@@ -45,7 +45,7 @@ class RegisterForm(UserForm):
 
     class Meta:
         model = OwnerProfile
-        fields = ('first_name', 'last_name', 'profile_picture',  'email', 'username',
+        fields = ('first_name', 'last_name', 'email', 'username',
                   'password1', 'password2',)
 
     def clean_password2(self):

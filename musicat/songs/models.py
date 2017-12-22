@@ -2,7 +2,6 @@ import hashlib
 
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils import timezone, crypto
 from django.utils.text import slugify
 
 from autoslug import AutoSlugField
@@ -13,12 +12,12 @@ from users.models import OwnerProfile
 
 class SongQuerySet(models.QuerySet):
 
-    def get_unpublished_pets(self):
-        return self.filter(published=False)
+    def __str__(self):
+        return self.name
 
 
 class Group(models.Model):
-    name = models.TextField(max_length=100, unique=True)
+    name = models.TextField(max_length=100, primary_key=True)
     genre = models.TextField(max_length=100)
     slug = AutoSlugField(max_length=30)
     image = models.ImageField(upload_to='group_photos')
@@ -30,22 +29,20 @@ class Group(models.Model):
 def get_slug(instance):
     group = ''
     if instance.group:
-        group = instance.city.name
+        group = instance.group.name
     return slugify('{}-{}'.format(instance.name, group))
 
 
-class Song(TimeStampedModel):
-    owner = models.ForeignKey(OwnerProfile)
-    group = models.ForeignKey(Group)
+class Song(models.Model):
+    #owner = models.ForeignKey(OwnerProfile)
+    # group = models.ForeignKey(Group)
+    group = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-
-    slug = AutoSlugField(max_length=50, populate_from=get_slug, unique=True)
-
-    objects = SongQuerySet.as_manager()
+    description = models.CharField(max_length=5000)
+    #objects = SongQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('meupet:detail', kwargs={'pk_or_slug': get_slug})
+        return reverse('songs:detail', kwargs={'pk_or_slug': get_slug})
 
     def __str__(self):
         return self.name
