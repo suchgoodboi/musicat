@@ -29,10 +29,19 @@ class SongForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SongForm, self).__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({'class': 'form-control'})
-        self.fields['group'].widget.attrs.update({'class': 'form-control'})
-        self.fields['description'].widget.attrs.update({'class': 'form-control'})
-
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Выхода нет')}),
+            'group': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Сплин')}),
+            'description': forms.Textarea(attrs={'class': 'form-control',
+                                                 'placeholder': _(
+                                                     "Скоро рассвет,\n"
+                                                     "Выхода нет. \n"
+                                                     "Ключ поверни...")}),
+        }
+        self.fields['name'].widget = widgets['name']
+        self.fields['group'].widget = widgets['group']
+        # self.fields['description'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget = widgets['description']
     class Meta:
         model = models.Song
         fields = ('name', 'group', 'description',)

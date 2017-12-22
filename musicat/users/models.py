@@ -6,9 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 
 class OwnerProfile(AbstractUser):
     is_information_confirmed = models.BooleanField(default=False)
-    phone = models.CharField('Telephone', max_length=30, blank=True)
     profile_picture = models.ImageField(upload_to='user_profiles',
                                         help_text=_('Maximum image size is 8MB'),
+                                        default='img/no-photo.png'
                                         )
 
     def get_absolute_url(self):

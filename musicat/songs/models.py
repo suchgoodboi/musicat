@@ -19,7 +19,6 @@ class SongQuerySet(models.QuerySet):
 class Group(models.Model):
     name = models.TextField(max_length=100, primary_key=True)
     genre = models.TextField(max_length=100)
-    slug = AutoSlugField(max_length=30)
     image = models.ImageField(upload_to='group_photos')
 
     def __str__(self):
@@ -34,15 +33,15 @@ def get_slug(instance):
 
 
 class Song(models.Model):
-    #owner = models.ForeignKey(OwnerProfile)
-    # group = models.ForeignKey(Group)
-    group = models.CharField(max_length=50)
+    owner = models.ForeignKey(OwnerProfile)
+    group = models.ForeignKey(Group)
+    #group = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=5000)
     #objects = SongQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('songs:detail', kwargs={'pk_or_slug': get_slug})
+        return reverse('songs:detail', kwargs={'pk_or_slug': id})
 
     def __str__(self):
         return self.name

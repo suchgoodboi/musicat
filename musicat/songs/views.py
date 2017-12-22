@@ -23,11 +23,11 @@ class SongIndexView(ListView):
 
 
 def song_detail_view(request, pk_or_slug):
-    song = models.Song.objects.filter(slug=pk_or_slug).first()
+    song = models.Song.objects.filter(id=pk_or_slug).first()
 
     if not song:
         try:
-            song = models.Song.objects.get(pk=pk_or_slug)
+            song = models.Song.objects.get(id=pk_or_slug)
         except ValueError:
             raise Http404()
 
@@ -77,11 +77,10 @@ class RegisterSongView(LoginRequiredMixin, CreateView):
             messages.warning(request, _('Please confirm your informations before registering a new song.'))
             return HttpResponseRedirect(reverse('users:edit'))
         else:
-            print('здеся')
             return super(RegisterSongView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
-        #form.instance.owner = self.request.user
+        form.instance.owner = self.request.user
         return super(RegisterSongView, self).form_valid(form)
 
 
